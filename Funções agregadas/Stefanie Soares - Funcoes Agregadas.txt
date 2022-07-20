@@ -1,0 +1,49 @@
+﻿Stefanie Soares 
+
+
+
+
+Usando a base cinematográfica das últimas aulas, Faça as seguintes consultas:
+1. a soma das idades das atrizes.
+2. o nome do artista e o número de filmes em que participou;
+3. para cada ator que não ganhou oscar, listar o seu nome, ano de seu filme mais antigo e do mais novo;
+4. para cada filme listar: o nome do filme, média de cachês pagos por filme, cachê mais alto, cachê
+mais baixo, e total dos cachês pagos;
+5. o nome do artista e o número de filmes em que participou, para todo artista que participou de
+no mínimo 2 filmes;
+6. o número de caches distintos maiores do que 2000 pagos em cada filme, para todo filme onde
+a soma dos cachês destes artistas foi inferior a 8000.
+
+
+-- 1) 
+
+
+SELECT SUM(idade) AS "IDADES" FROM ator WHERE sexo = 'f'; 
+
+
+-- 2) 
+
+
+SELECT nomeart, COUNT(*) FROM ator d, personagem dp WHERE d.coda = dp.coda GROUP BY dp.coda;
+
+
+– 3)
+SELECT MIN(ano), nomeart FROM ator, filme JOIN personagem ON filme.codf = personagem.codf WHERE (oscar = 0) and ator.coda = personagem.coda  GROUP BY personagem.coda; 
+
+
+–4) 
+
+
+SELECT nome, AVG(cache), MAX(cache), MIN(cache), SUM(cache) FROM filme, personagem WHERE filme.codf = personagem.codf GROUP BY personagem.codf;
+
+
+–5) 
+
+
+SELECT nomeart, COUNT(codf) FROM ator, personagem WHERE ator.coda = personagem.coda GROUP BY personagem.coda HAVING (COUNT(codf)>1);
+
+
+–6)
+
+
+SELECT nomeart, COUNT(cache), SUM(cache) FROM personagem, ator WHERE personagem.coda = ator.coda GROUP BY personagem.coda HAVING (SUM(cache)<8000 and SUM(cache)>2000);
