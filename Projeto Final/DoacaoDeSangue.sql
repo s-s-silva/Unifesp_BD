@@ -57,14 +57,13 @@ Foreign Key (codHospital) references hospital (codhospital),
 Foreign Key (codEnfermeiro) references enfermeiro (cod) 
 ) Engine=iNNODB;
 
-drop table doacao;
+
 CREATE TABLE doacaohospital (codDoacao integer, codHospital integer,
 PRIMARY KEY (codDoacao),
 FOREIGN KEY (codHospital) REFERENCES hospital (codHospital),
 Foreign Key (codDoacao) references doacao (cod)
 ) ENGINE = iNNODB;
 
-drop table doacaohospital;
 
 CREATE TABLE convenioDoador (codConvenio integer, codDoador integer,
 PRIMARY KEY (codDoador),
@@ -321,21 +320,21 @@ FROM hospital h
 	LEFT JOIN doacao d
     ON h.codhospital = d.codhospital;
     
--- MOSTRA O NOME DO DOADOR QUE TEM MAIS DE UMA DOAÇÃO REALIZADA
+--  NOME DO DOADOR QUE TEM MAIS DE UMA DOAÇÃO REALIZADA
 SELECT doador.nome, historicodoacao.doacoesrealizadas
 FROM doador, historicodoacao
 WHERE doador.cod = historicodoacao.codDoador
 GROUP BY doador.nome
 HAVING(historicodoacao.doacoesrealizadas > 1);
 
--- MOSTRA O NOME DOS HOSPITAIS QUE A SOMA DO PESO DE SEUS DOADORES NAO ULTRAPASSA 75Kg
+-- NOME DOS HOSPITAIS QUE A SOMA DO PESO DE SEUS DOADORES NAO ULTRAPASSA 75Kg
 SELECT h.nome AS nomeHospital, d.codDoador AS codido_do_doador, c.peso 
 FROM hospital h, doacao d, caracteristicas c
 WHERE h.codhospital = d.codhospital AND d.codDoador = c.codDoador
 GROUP BY d.codDoador
 HAVING sum(peso<75);
 
--- MOSTRA OS HOSPITAIS QUE TEM MAIS DE DOIS ENFERMEIROS TRABALHANDO
+-- HOSPITAIS QUE TEM MAIS DE DOIS ENFERMEIROS TRABALHANDO
 SELECT h.nome AS 'nome do hospital'
 FROM enfermeiro e, hospital h
 WHERE h.codhospital = e.codhospital
@@ -350,4 +349,4 @@ GROUP BY t.idade
 HAVING avg(t.peso>60)
 ORDER BY t.idade;
 
-DROP database projetofinal; 
+-- DROP database projetofinal; 
